@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useCallback} from 'react';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../store/actions/index'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -36,7 +38,7 @@ const data = {
     ]
   }
 
-  export const options = {
+  const options = {
     responsive: true,
     plugins: {
       legend: {
@@ -49,9 +51,15 @@ const data = {
     },
   };
 
-
 const ComboChart = (props) => {
-    console.log(props.input)
+
+  const dispatch = useDispatch();
+  const onInitWeight = useCallback(() => dispatch(actions.initWeights()), [dispatch]);
+
+    useEffect(() => {
+      onInitWeight()
+  },[onInitWeight]);
+
     return (
         <Line
         data={data}

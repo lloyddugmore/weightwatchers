@@ -7,7 +7,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 const FormComponent = () => {
     const { register, handleSubmit, watch, formState: {errors} } = useForm();
     const [ value, setValue ] = useState("");
-    const onSubmit = data => setValue(data);//console.log(data);
+    const onSubmit = data => setValue(data);
     const analytics = getAnalytics();
     logEvent(analytics, 'Formpage loaded');
 

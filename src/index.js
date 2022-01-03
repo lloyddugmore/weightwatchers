@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import firebase from "./uitls/firebase-config";
 
-import { createStore, compose, combineReducers } from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
 import weightWatcherReducer from './store/reducers/weighWatcherReducer';
 
 import App from './App';
@@ -15,11 +16,11 @@ const rootReducer = combineReducers({
   weightWatcher: weightWatcherReducer,
 })
 const store = createStore(
-      rootReducer,
-      composeEnhancers(
-      )
-    )
-  ;
+  rootReducer,
+  composeEnhancers(
+    applyMiddleware(thunk)
+  ))
+;
 
 const app = (
   <Provider store={store}>

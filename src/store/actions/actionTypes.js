@@ -1,3 +1,5 @@
 export const FETCH_WEIGHTS = 'FETCH_WEIGHTS';
+export const INIT_WEIGHTS = 'INIT_WEIGHTS';
+export const SET_WEIGHTS = 'SET_WEIGHTS';
 export const ADD_WEIGHTS = 'ADD_WEIGHTS';
 export const FETCH_WEIGHTS_FAILED = 'FETCH_WEIGHTS_FAILED';
