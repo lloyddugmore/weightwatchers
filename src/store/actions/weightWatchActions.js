@@ -4,7 +4,7 @@ import { collection, getDocs } from 'firebase/firestore/lite';
 
 //this is an async call.... using thunk as it will reach out to firebase DB
 export const setWeights = (weights) => {
-    console.log('in set weights');
+    console.log('in set weights ', weights);
     return {
         type: actionTypes.SET_WEIGHTS,
         weights: weights
@@ -17,30 +17,14 @@ export const fetchWeightsFailed = () => {
     }
 }
 
-export const initWeights = (payload) => async(dispatch) => {
+export const initWeights = () => async(dispatch) => {
 
     const weightsCol = collection(db, 'weights');
     const weightSnapshot = await getDocs(weightsCol);
     const weightList = weightSnapshot.docs.map(doc => doc.data());
     console.log(weightList);
 
-    return dispatch => {
-        dispatch(setWeights(weightList));
-    }
-
-    // const response = db.collection('weights');
-    // const data = await response.get();
-    // console.log(data);
-
-    // return dispatch => {
-    //     axios.get('/weights.json')
-    //     .then( response => {
-    //         dispatch(setWeights(response.data));
-    //     })
-    //     .catch( error => {
-    //         dispatch(fetchWeightsFailed())
-    //     })
-    // };
+    dispatch(setWeights(weightList));
 };
 
 export const addWeight = (weight) => {
