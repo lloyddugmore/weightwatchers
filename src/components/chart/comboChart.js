@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback} from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions/index'
 import {
     Chart as ChartJS,
@@ -51,20 +51,57 @@ const data = {
     },
   };
 
+  const dynamicColors = function() {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+ };
+
 const ComboChart = (props) => {
 
   const dispatch = useDispatch();
   const onInitWeight = useCallback(() => dispatch(actions.initWeights()), [dispatch]);
 
-    useEffect(() => {
+  useEffect(() => {
       onInitWeight()
   },[onInitWeight]);
 
-    return (
-        <Line
+  const weights = useSelector(state => state.weightWatcher.weights);
+
+  let dataBuiltUp = [];
+  if (weights) {
+    for (let i = 0; i < weights.length; i++) {
+      const color = dynamicColors();
+      const obj = {
+        label: weights[i].user,
+        backgroundColor: color,
+        borderColor: color,
+        borderWidth: 2,
+        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 }))
+      }
+      dataBuiltUp.push(obj);
+    }
+  }
+
+  const data2 = {
+    labels,
+    datasets: dataBuiltUp
+  }
+
+  return (
+    <>
+      <Line
         data={data}
         options={options} />
-    );
+
+      <p></p>
+
+      <Line
+        data={data2}
+        options={options} />
+  </>
+  );
 }
 
 export { ComboChart };

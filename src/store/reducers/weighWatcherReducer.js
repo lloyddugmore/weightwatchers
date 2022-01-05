@@ -25,6 +25,12 @@ const weightWatcher = (state = initialState, action) => {
                 ...state,
                 error: true
             };
+        case actionTypes.SET_WEIGHTS:
+            return {
+                ...state,
+                weights: action.weights,
+                error: false
+            };
         default:
             return state;
     }

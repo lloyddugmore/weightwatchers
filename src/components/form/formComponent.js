@@ -11,7 +11,7 @@ const FormComponent = () => {
     const analytics = getAnalytics();
     logEvent(analytics, 'Formpage loaded');
 
-    console.log(watch("name"));
+    // console.log(watch("name"));
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
