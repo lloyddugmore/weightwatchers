@@ -69,25 +69,41 @@ const ComboChart = (props) => {
 
   const weights = useSelector(state => state.weightWatcher.weights);
 
-  let dataBuiltUp = [];
-  if (weights) {
-    for (let i = 0; i < weights.length; i++) {
-      const color = dynamicColors();
-      const obj = {
-        label: weights[i].user,
-        backgroundColor: color,
-        borderColor: color,
-        borderWidth: 2,
-        data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 }))
+  console.log(weights);
+
+  let dateList = [];
+  let dataSets = [];
+  if(weights) {
+    weights.forEach(element => {
+      console.log(element);
+      if (element.readings) {
+        let resultList = [];
+        element.readings.forEach(reading => {
+            dateList.push(reading.entry);
+            resultList.push(reading.reading);
+            const color = dynamicColors();
+            const actualObj = {
+              backgroundColor: color,
+              borderColor: color,
+              borderWidth: 2,
+              data: resultList,
+              label: element.user
+            }
+            dataSets.push(actualObj);
+          }
+        )
       }
-      dataBuiltUp.push(obj);
-    }
+    });
   }
 
   const data2 = {
-    labels,
-    datasets: dataBuiltUp
+    labels: dateList,
+    datasets: dataSets
   }
+
+
+  console.log(data);
+  console.log(data2);
 
   return (
     <>
