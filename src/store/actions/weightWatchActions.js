@@ -1,12 +1,12 @@
 import * as actionTypes from './actionTypes';
-import db from '../../firebase-config';
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
 //this is an async call.... using thunk as it will reach out to firebase DB
-export const setWeights = (weights) => {
+export const setWeights = (weights, userWeights) => {
     return {
         type: actionTypes.SET_WEIGHTS,
-        weights: weights
+        weights: weights,
+        userWeights: userWeights
     };
 };
 
@@ -17,12 +17,19 @@ export const fetchWeightsFailed = () => {
 }
 
 export const initWeights = () => async(dispatch) => {
-
-    const weightsCol = collection(db, 'weights');
-    const weightSnapshot = await getDocs(weightsCol);
-    const weightList = weightSnapshot.docs.map(doc => doc.data());
-
-    dispatch(setWeights(weightList));
+    const db = getFirestore();
+    const colRef = collection(db, 'weights');
+    getDocs(colRef)
+    .then((snapshot) => {
+        let weights = [];
+        snapshot.docs.forEach((doc) => {
+            weights.push({ ...doc.data(), id: doc.id });
+        });
+        dispatch(setWeights(weights, weights));
+    })
+    .catch(err => {
+        console.log(err);
+    });
 };
 
 export const addWeight = (weight) => {

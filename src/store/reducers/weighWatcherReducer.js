@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     weights: null,
+    userWeights: null,
     error: false
 }
 
@@ -14,12 +15,6 @@ const weightWatcher = (state = initialState, action) => {
                     ...state.weights
                 }
             };
-        case actionTypes.FETCH_WEIGHTS:
-            return {
-                ...state,
-                weights: action.weights,
-                error: false
-            };
         case actionTypes.FETCH_WEIGHTS_FAILED:
             return {
                 ...state,
@@ -29,6 +24,7 @@ const weightWatcher = (state = initialState, action) => {
             return {
                 ...state,
                 weights: action.weights,
+                userWeights: action.userWeights,
                 error: false
             };
         default:
