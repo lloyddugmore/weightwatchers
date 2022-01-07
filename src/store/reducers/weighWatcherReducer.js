@@ -8,10 +8,11 @@ const initialState = {
 
 const weightWatcher = (state = initialState, action) => {
     switch (action.type){
-        case actionTypes.FETCH_WEIGHTS_FAILED:
+        case actionTypes.ERROR:
             return {
                 ...state,
-                error: true
+                error: true,
+                errorMessage: action.errorMessage
             };
         case actionTypes.SET_WEIGHTS:
             return {

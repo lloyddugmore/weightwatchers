@@ -1,2 +1,2 @@
 export const SET_WEIGHTS = 'SET_WEIGHTS';
-export const FETCH_WEIGHTS_FAILED = 'FETCH_WEIGHTS_FAILED';
+export const ERROR = 'ERROR';

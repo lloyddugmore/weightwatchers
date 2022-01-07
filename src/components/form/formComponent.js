@@ -5,32 +5,34 @@ import { useForm } from "react-hook-form";
 import { ComboChart } from "../chart/comboChart";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import * as actions from '../../store/actions/index';
+import { ErrorComponent } from "../error/errorComponent";
 
 const FormComponent = () => {
     const { register, handleSubmit, formState: {errors} } = useForm();
     const [ value, setValue ] = useState("");
-    const onSubmit = data => setValue(data);
+
     const analytics = getAnalytics();
-    logEvent(analytics, 'Formpage loaded');
+    logEvent(analytics, 'Weight Entry Page Loaded');
 
     const userWeights = useSelector(state => state.weightWatcher.userWeights);
 
-    const dispatch = useDispatch();
-    const onWeightAdded = (entry) => {
-        //todo work out how to get the values from  the form here... (entry)
-        dispatch(actions.addWeight(entry, userWeights));
+    const dispatch = useDispatch()
+    const onSubmit = (data) => {
+        setValue(data);
+        logEvent(analytics, 'Weight Submitted By User');
+        dispatch(actions.addWeight(data, userWeights));
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <h2>Enter a new weight result here</h2>
-            <input defaultValue="test" {...register("name")}/>
-            <input {...register("weight", {required: true})}></input>
-            {errors.weight && <span>This field is required</span>}
+            <h2>Weight Watcher</h2>
+            <input placeholder="Enter your most recent weight..."
+                   type="number"
+                   {...register("weight", {required: true, min: 0, max: 250})}>
+            </input>
+            <input type="submit" value="Save"></input>
 
-            <input type="submit"/>
-            <button onClick={onWeightAdded}>Press me</button>
-
+            <ErrorComponent error={errors}></ErrorComponent>
             <ComboChart input={value}></ComboChart>
         </form>
     );

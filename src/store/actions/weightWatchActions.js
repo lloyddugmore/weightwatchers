@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 import { getFirestore, collection, getDocs, addDoc, doc, updateDoc } from 'firebase/firestore';
 
 //this is an async call.... using thunk as it will reach out to firebase DB
-export const setWeights = (weights, userWeights) => {
+const setWeights = (weights, userWeights) => {
     return {
         type: actionTypes.SET_WEIGHTS,
         weights: weights,
@@ -10,9 +10,10 @@ export const setWeights = (weights, userWeights) => {
     };
 };
 
-export const fetchWeightsFailed = () => {
+const errorOccurred = (error) => {
     return {
-        type: actionTypes.FETCH_WEIGHTS_FAILED,
+        type: actionTypes.ERROR,
+        errorMessage: error
     }
 }
 
@@ -36,13 +37,14 @@ export const initWeights = () => async(dispatch) => {
     })
     .catch(err => {
         console.log(err);
+        dispatch(errorOccurred(err));
     });
 };
 
-export const addWeight = (weight, userWeights) => async(dispatch) => {
+export const addWeight = (inputData, userWeights) => async(dispatch) => {
     const db = getFirestore();
     userWeights.forEach((weight) => {
-        weight.readings.push({entry: weight.readings.length + 1, reading: Math.random() * (100 - 10) + 10});
+        weight.readings.push({entry: weight.readings.length + 1, reading: inputData.weight});
         const docRef = doc(db, 'weights', weight.id);
         updateDoc(docRef, weight);
     });
@@ -65,5 +67,6 @@ export const addWeight = (weight, userWeights) => async(dispatch) => {
     })
     .catch(err => {
         console.log(err);
+        dispatch(errorOccurred(err));
     });
 };
