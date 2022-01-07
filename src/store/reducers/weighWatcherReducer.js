@@ -8,13 +8,6 @@ const initialState = {
 
 const weightWatcher = (state = initialState, action) => {
     switch (action.type){
-        case actionTypes.ADD_WEIGHTS:
-            return {
-                ...state,
-                weights: {
-                    ...state.weights
-                }
-            };
         case actionTypes.FETCH_WEIGHTS_FAILED:
             return {
                 ...state,

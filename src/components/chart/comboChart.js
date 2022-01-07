@@ -48,7 +48,7 @@ const ComboChart = (props) => {
 
   const dateMap = new Map();
   let dataSets = [];
-  if(weights) {
+  if(weights && weights.length > 0) {
     weights.forEach(weight => {
       if (weight.readings) {
         let resultList = [];
