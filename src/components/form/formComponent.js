@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { useDispatch, useSelector} from 'react-redux';
 
 import { useForm } from "react-hook-form";
@@ -11,16 +11,13 @@ import styles from './formComponent.module.scss';
 
 const FormComponent = () => {
     const { register, handleSubmit, formState: {errors} } = useForm();
-    const [ value, setValue ] = useState("");
 
     const analytics = getAnalytics();
     logEvent(analytics, 'Weight Entry Page Loaded');
 
-    const userWeights = useSelector(state => state.weightWatcher.userWeights);
-
     const dispatch = useDispatch()
+    const userWeights = useSelector(state => state.weightWatcher.userWeights);
     const onSubmit = (data) => {
-        setValue(data);
         logEvent(analytics, 'Weight Submitted By User');
         dispatch(actions.addWeight(data, userWeights));
     };
@@ -43,7 +40,7 @@ const FormComponent = () => {
                 </div>
             </div>
             <ErrorComponent error={errors}></ErrorComponent>
-            <ComboChart input={value}></ComboChart>
+            <ComboChart></ComboChart>
         </form>
     );
 }
